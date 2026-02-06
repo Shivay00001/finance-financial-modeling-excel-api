@@ -1,3 +1,8 @@
-# finance-financial-modeling-excel-api
+# Finance Financial Modeling Excel Api
 
-Initial scaffolding.
+This repository contains the source code and configuration for **finance-financial-modeling-excel-api**, a part of the advanced engineering showcase.
+
+## Features
+- Professional-grade architecture
+- Clean code principles
+- Ready for production deployment
