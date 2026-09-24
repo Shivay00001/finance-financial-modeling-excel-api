@@ -1,50 +1,38 @@
-# Finance Financial Modeling Excel Api
+# Financial Modeling Excel API — DCF
 
-Python API for Excel-driven financial modeling and analytics
+**What it does:** Builds a real discounted-cash-flow valuation from inputs
+(revenue, per-year growth rates, EBIT margin, tax, capex/NWC assumptions,
+WACC, terminal growth, net debt, shares) and returns full year-by-year numbers
+plus a downloadable, formatted `.xlsx` workbook (inputs, FCF schedule,
+valuation summary).
 
-![Language](https://img.shields.io/badge/Language-HTML-blue)
-![Status](https://img.shields.io/badge/Status-Active-success)
-![License](https://img.shields.io/badge/License-MIT-green)
+**Math:** `FCF = NOPAT − capex − ΔNWC`, discounted at WACC; terminal value via
+Gordon growth `TV = FCF_n·(1+g)/(r−g)`; `EV = PV(FCF) + PV(TV)`;
+`value/share = (EV − net debt) / shares`. No AI, no stubs — plain finance math.
 
-## 🚀 Overview
+## Run
 
-Welcome to the **Finance Financial Modeling Excel Api** repository. This project is built to deliver a robust and scalable solution tailored to modern development standards.
+```bash
+pip install -r requirements.txt
+uvicorn main:app --port 8000
+```
 
-## ✨ Features
+## API
 
-- **High Performance:** Optimized for speed and efficiency.
-- **Scalable Architecture:** Designed to grow with your needs.
-- **Clean Codebase:** Follows best practices and industry standards.
-- **Secure by Default:** Engineered with security in mind.
+- `POST /dcf` — JSON model + valuation
+- `POST /dcf/xlsx` — same model as downloadable `.xlsx`
 
-## 🛠️ Prerequisites
+```bash
+curl -X POST localhost:8000/dcf -H 'Content-Type: application/json' -d '{
+  "initial_revenue": 100, "growth_rates": [0.10, 0.08, 0.05],
+  "ebit_margin": 0.20, "tax_rate": 0.25, "discount_rate": 0.10,
+  "terminal_growth_rate": 0.02, "shares_outstanding": 10}'
+curl -X POST localhost:8000/dcf/xlsx -H 'Content-Type: application/json' \
+  -d '{...}' -o dcf_model.xlsx
+```
 
-Ensure you have the following installed in your environment before proceeding:
-- Appropriate runtime/compiler for `HTML`
-- Standard development tools
+## Tests
 
-## 📦 Installation
-
-Follow standard installation steps for `HTML` to set up the project locally:
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Shivay00001/finance-financial-modeling-excel-api.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd finance-financial-modeling-excel-api
-   ```
-3. Install dependencies according to the standard `HTML` ecosystem.
-
-## 💻 Usage
-
-Run the project using standard execution commands for `HTML`. Ensure all environment variables and configurations are set prior to execution.
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
-
-## 📝 License
-
-This project is licensed under standard terms.
+```bash
+pytest -q   # includes hand-verified DCF arithmetic + xlsx integrity checks
+```
