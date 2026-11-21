@@ -1,5 +1,7 @@
 # Financial Modeling Excel API — DCF
 
+Built by [VisionQuantech](https://visionquantech.com) — AI agents, apps & tools for small businesses.
+
 **What it does:** Builds a real discounted-cash-flow valuation from inputs
 (revenue, per-year growth rates, EBIT margin, tax, capex/NWC assumptions,
 WACC, terminal growth, net debt, shares) and returns full year-by-year numbers
